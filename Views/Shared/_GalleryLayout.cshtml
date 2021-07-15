@@ -1,0 +1,442 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewBag.Title - FinalDrive</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/menuBar.css" rel="stylesheet" />
+    <link href="~/Content/gallery-style.css" rel="stylesheet" />
+
+    <!-- Check Box değişimi-->
+    <script>
+        $(document).ready(function () {
+            var trues = [];
+            $('.checkPhoto input').change(function () {
+                
+                if (this.checked == true)
+                {
+                    trues.push(this.id)
+                }
+                else
+                {
+                    
+                    var pos = trues.indexOf(this.id);
+                    let neww = trues.splice(pos, 1);
+                   
+                    
+                }
+                if (trues.length == 0) {
+                    document.getElementById("photoDeleteLi").style.visibility = "hidden";
+                    document.getElementById("photoDeleteLi").style.display = "none";
+                }
+                else {
+                    document.getElementById("photoDeleteLi").style.visibility = "visible";
+                    document.getElementById("photoDeleteLi").style.display = "block";
+                }
+            });
+            $("#photoDeleteLi").click(function () {
+                if (trues.length != 0) {
+                    var ids = "";
+                    for (var i = 0; i < trues.length; i++) {
+                        ids = ids + "id=" + trues[i] + "&";
+                    }
+                    ids = ids.slice(0, -1);
+                    $("#modalSil .modal-body .btn.btn-danger").attr("href", "/Home/Delete?" + ids);
+                    $("#modalSil .modal-title").text(trues.length + " Adet Resimi Silmek İstediğinize Emin Misiniz?");
+                    //sonra da modalimizi göster
+                    $("#modalSil").modal("show");
+                }
+               
+            });
+        });
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        $(function () {
+            $('.navbar-toggle').click(function () {
+                $('.navbar-nav').toggleClass('slide-in');
+                $('.side-body').toggleClass('body-slide-in');
+                $('#search').removeClass('in').addClass('collapse').slideUp(200);
+
+                /// uncomment code for absolute positioning tweek see top comment in css
+                //$('.absolute-wrapper').toggleClass('slide-in');
+
+            });
+
+            // Remove menu for searching
+            $('#search-trigger').click(function () {
+                $('.navbar-nav').removeClass('slide-in');
+                $('.side-body').removeClass('body-slide-in');
+
+                /// uncomment code for absolute positioning tweek see top comment in css
+                //$('.absolute-wrapper').removeClass('slide-in');
+
+            });
+        });
+    </script>
+    <style>
+        .row{padding:0px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f8f8;
+            text-align: center;
+            color: #777;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+
+
+
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-file input[type=file] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                min-width: 100%;
+                min-height: 100%;
+                font-size: 100px;
+                text-align: right;
+                filter: alpha(opacity=0);
+                opacity: 0;
+                outline: none;
+                background: white;
+                cursor: inherit;
+                display: block;
+            }
+
+        #img-upload {
+            width: 100%;
+        }
+    </style>
+
+    <script>
+        //GetPhotoFull Modal
+        $(function () {
+            // a tagimizde bulunan .view classımıza click olduğunda
+            $("body").on("click", ".thumb a", function () {
+                //data-target dan url mizi al
+                var url = $(this).data("target");
+                //bu urlimizi post et
+                $.post(url, function (data) { })
+                    //eğer işlemimiz başarılı bir şekilde gerçekleşirse
+                    .done(function (data) {
+                        //gelen datayı .modal-body mizin içerise html olarak ekle
+                        $("#GetPhotoFull .modal-body").html(data);
+                        //sonra da modalimizi göster
+                        $("#GetPhotoFull").modal("show");
+                    })
+                    //eğer işlem başarısız olursa
+                    .fail(function () {
+                        //modalımızın bodysine Error! yaz
+                        $("#GetPhotoFull .modal-body").text("Hata!!");
+                        //sonra da modalimizi göster
+                        $("#GetPhotoFull").modal("show");
+                    })
+
+            });
+
+            //PhotoUpload Modal
+
+
+            $("body").on("click", ".PhotoUpload", function () {
+                $("#PhotoUpload").modal();
+
+
+
+            });
+        })
+        $(document).ready(function () {
+
+            $(document).on('change', '.btn-file :file', function () {
+                var input = $(this),
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [label]);
+            });
+
+            $('.btn-file :file').on('fileselect', function (event, label) {
+
+                var input = $(this).parents('.input-group').find(':text'),
+                    log = label;
+
+                if (input.length) {
+                    input.val(log);
+                } else {
+                    if (log) alert(log);
+                }
+
+            });
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#img-upload').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#imgInp").change(function () {
+                readURL(this);
+            });
+
+            $("#clear").click(function () {
+                $('#img-upload').attr('src', '');
+                $('#urlname').val('');
+            });
+        });
+
+
+    </script>
+
+    <!-- Hata mesajı modal-->
+    @if (ViewBag.hata != null)
+    {
+        <script>
+            $(function () {
+
+                $("#hataModal").modal();
+            })
+        </script>
+
+    }
+</head>
+<body>
+    <!--Modals-->
+
+    <div class="modal" tabindex="-1" role="dialog" id="modalSil" style="z-index:100000 0;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Silmek İstediğinize Emin Misiniz?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <a class="btn btn-danger" href="#">Sil</a>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="ref">Kapat</button>
+                </div>
+                <div class="modal-footer">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal" tabindex="-1" role="dialog" id="hataModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bilgi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if (ViewBag.hata != null)
+                    {
+                        <span>@ViewBag.hata</span>
+                    }
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ref">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="GetPhotoFull">
+        <div class="modal-dialog" role="document" style="width:fit-content !important;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Fotoğraf Önizleme</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align:center;">
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ref">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="PhotoUpload">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Fotoğraf Yükle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" enctype="multipart/form-data" action="/Home/Upload">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">
+                                        Seç <input type="file" accept="image/png, image/jpeg, image/gif" id="imgInp" required="required" name="photo">
+                                    </span>
+                                </span>
+                                <input id='urlname' type="text" class="form-control" readonly>
+                            </div>
+                            <a id="clear" class="btn btn-default col-sm-6">Temizle</a>
+                            <button id="submit" type="submit" class="btn btn-success col-sm-6">Yükle</button>
+                            <img id='img-upload' />
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ref">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modals-->
+
+    <div class="row">
+        <!-- uncomment code for absolute positioning tweek see top comment in css -->
+        <!-- <div class="absolute-wrapper"> </div> -->
+        <!-- Menu -->
+        <div class="side-menu">
+
+            <nav class="navbar navbar-default" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <div class="brand-wrapper">
+                        <!-- Hamburger -->
+                        <button type="button" class="navbar-toggle">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+
+                        <!-- Brand -->
+                        <div class="brand-name-wrapper">
+                            <a class="navbar-brand" href="#">
+                                FinalDrive
+                            </a>
+                        </div>
+
+                        <!-- Logout -->
+                        <a href="/Home/Logout" class="btn btn-default" id="search-trigger">
+                            <span class="glyphicon glyphicon-log-out"></span>
+                        </a>
+
+                        <!-- Search body -->
+                        <div id="search" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <form class="navbar-form" role="search">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Search">
+                                    </div>
+                                    <button type="submit" class="btn btn-default "><span class="glyphicon glyphicon-ok"></span></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Main Menu -->
+                <div class="side-menu-container">
+                    <ul class="nav navbar-nav">
+
+                        <li class="active"><a href="/Home/Gallery"><span class="glyphicon glyphicon-home"></span> Anasayfa</a></li>
+                        @*<li><a href="#"><span class="glyphicon glyphicon-plus"></span> Yeni Klasör Oluştur</a></li>*@
+                        <li><a href="#" class="PhotoUpload"><span class="glyphicon glyphicon-upload "></span> Fotoğraf Yükle</a></li>
+      
+
+                        <li id="photoDeleteLi" style="visibility:hidden;display:none;"><a href="#!"><span class="glyphicon glyphicon-erase"></span> Seçili Fotoğrafları Sil</a></li>
+                        <li>
+                            <a href="#!"><span class="glyphicon glyphicon-stats"></span> Kullanılan Alan (@Model.Count Resim)</a>
+                            <div class="progress" style="margin: 5px 15px;height:30px;vertical-align:middle;">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="@ViewBag.storage"
+                                     aria-valuemin="0" aria-valuemax="100" style="width:@ViewBag.storage%;color:#555;font-weight:bold;background-color:#f00;font-size:13px;line-height:30px;">
+                                    @{ 
+                                        ViewBag.storage = ViewBag.storage * 250 / 100;
+                                    }
+                                        @ViewBag.storage/250MB
+                                            
+
+                                </div>
+                                
+
+                            </div>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </nav>
+
+        </div>
+
+        <!-- Main Content -->
+        <div class="container-fluid" style="margin-left:0px;">
+            <div class="side-body" style="padding-bottom:50px;">
+                @RenderBody()
+
+
+
+
+            </div>
+        </div>
+        <div class="footer">
+            182119007 Erkan Tekin Bulut Bilişim Final Projesi
+        </div>
+    </div>
+</body>
+</html>

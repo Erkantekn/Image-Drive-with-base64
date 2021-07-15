@@ -1,0 +1,8 @@
+﻿@model FinalDrive_v2._0.Models.photos
+@using FinalDrive_v2._0.Controllers
+@{
+    HomeController cntrllr = new HomeController();
+
+}
+
+<img src="data:image/png;base64, @cntrllr.ImageToBase64("images/users/" + User.Identity.Name + "/" + Model.yol)" style="max-width:100%;" />

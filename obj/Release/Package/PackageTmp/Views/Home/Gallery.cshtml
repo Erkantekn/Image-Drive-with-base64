@@ -1,0 +1,118 @@
+﻿@model List<FinalDrive_v2._0.Models.photos>
+@using FinalDrive_v2._0.Controllers
+@{
+    ViewBag.Title = "Galeri";
+    Layout = "~/Views/Shared/_GalleryLayout.cshtml";
+
+}
+<style>
+    .thumb {
+    }
+
+        .thumb .checkPhoto {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+            position: absolute;
+            padding: 15px;
+        }
+
+            .thumb .checkPhoto input {
+                transform: scale(2);
+                cursor: pointer;
+            }
+</style>
+<div class="row">
+    @{
+        /*
+        şimdi bi hesaplama yapmak gerekiyor.
+        Eğer fotoğraf sayısı 4ten büyükse
+
+
+
+        */
+        List<string> list1 = new List<string>(), list2 = new List<string>(), list3 = new List<string>(), list4 = new List<string>();
+        for (int i = 0; i < Model.Count; i++)
+        {
+            try
+            {
+                list1.Add(Model[i].yol + "?" + Model[i++].id.ToString());
+                if (Model[i] != null)
+                {
+                    list2.Add(Model[i].yol + "?" + Model[i++].id.ToString());
+                }
+
+                if (Model[i] != null)
+                {
+                    list3.Add(Model[i].yol + "?" + Model[i++].id.ToString());
+                }
+
+                if (Model[i] != null)
+                {
+                    list4.Add(Model[i].yol + "?" + Model[i].id.ToString());
+                }
+                else
+                {
+                    break;
+                }
+            }
+            catch
+            {
+                break;
+            }
+
+
+
+        }
+
+    }
+    @{
+        HomeController cntrllr = new HomeController();
+        string base64str = "";
+        //base64str = cntrllr.ImageToBase64("images/users/" + User.Identity.Name + "/" + list1[0].Split('?')[0]);
+        <div class="column">
+            @if (list1 != null)
+            {
+                foreach (var item in list1)
+                {
+                    <div class="thumb"><label class="checkPhoto"><input type="checkbox" value="whatever" id="@item.Split('?')[1]"></label><a data-target="/Home/GetPhotoFull?id=@item.Split('?')[1]" href="#!"> <img src="data:image/png;base64, @cntrllr.ImageToBase64("images/users/" + User.Identity.Name + "/" + item.Split('?')[0])" /></a></div>
+                }
+            }
+
+        </div>
+        <div class="column">
+            @if (list2 != null)
+            {
+                foreach (var item in list2)
+                {
+                    <div class="thumb"><label class="checkPhoto"><input type="checkbox" value="whatever" id="@item.Split('?')[1]"></label><a data-target="/Home/GetPhotoFull?id=@item.Split('?')[1]" href="#!"> <img src="data:image/png;base64, @cntrllr.ImageToBase64("images/users/" + User.Identity.Name + "/" + item.Split('?')[0])" /></a></div>
+                }
+            }
+
+        </div>
+        <div class="column">
+            @if (list3 != null)
+            {
+                foreach (var item in list3)
+                {
+                    <div class="thumb"><label class="checkPhoto"><input type="checkbox" value="whatever" id="@item.Split('?')[1]"></label><a data-target="/Home/GetPhotoFull?id=@item.Split('?')[1]" href="#!"> <img src="data:image/png;base64, @cntrllr.ImageToBase64("images/users/" + User.Identity.Name + "/" + item.Split('?')[0])" /></a></div>
+                }
+            }
+
+        </div>
+        <div class="column">
+            @if (list4 != null)
+            {
+                foreach (var item in list4)
+                {
+                    <div class="thumb"><label class="checkPhoto"><input type="checkbox" value="whatever" id="@item.Split('?')[1]"></label><a data-target="/Home/GetPhotoFull?id=@item.Split('?')[1]" href="#!"> <img src="data:image/png;base64, @cntrllr.ImageToBase64("images/users/" + User.Identity.Name + "/" + item.Split('?')[0])" /></a></div>
+                }
+            }
+
+        </div>
+    }
+</div>
+
+
+

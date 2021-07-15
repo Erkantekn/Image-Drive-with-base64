@@ -1,0 +1,79 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Giriş Yap - FinalDrive</title>
+
+    <!-- Font Icon -->
+    <link href="~/fonts/material-design-iconic-font.min.css" rel="stylesheet" />
+
+    <!-- Main css -->
+    <link href="~/Content/form-style.css" rel="stylesheet" />
+    <style>
+        h2 {
+            font-family: 'Material-Design-Iconic-Font';
+        }
+
+        input {
+            font-family: 'Material-Design-Iconic-Font';
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main">
+
+   
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="~/images/signin-image.jpg" alt="Giriş yap"></figure>
+
+                        
+                    </div>
+
+                    <div class="signin-form">
+                        <h2 class="form-title">Giriş yap</h2>
+                        <form method="POST" class="register-form" id="login-form" action="/Home/Login">
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="kAdi" id="email" placeholder="Mailiniz" required="required"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="sifre" id="your_pass" placeholder="Şifre" required="required"/>
+                            </div>
+                            @{
+                                if (ViewBag.hata != null)
+                                {
+                                    <i>@ViewBag.hata</i>
+                                }
+                            }
+
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Giriş Yap" />
+                            </div>
+                        </form>
+                        <div class="social-login">
+                            <a href="/Home/Signup" class="signup-image-link">Hesabın Yok mu? Kaydol</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/main.js"></script>
+</body>
+</html>
