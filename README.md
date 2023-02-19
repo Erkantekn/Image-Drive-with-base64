@@ -1,6 +1,6 @@
 # Image-Drive-with-base64
 
-Resim Depolama Sitesi(http://52.59.124.115:81/)
+Resim Depolama Sitesi
 
 C# Asp.net Framework’ün MVC mimarisi ile hazırlanan bu sitede MSSQL veritabanı kullanılmıştır.
 
